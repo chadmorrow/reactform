@@ -1,0 +1,74 @@
+buildscript {
+    ext.kotlin_version = '1.2.40'
+    ext.serialization_version = '0.4.2'
+
+    repositories {
+        jcenter()
+        mavenCentral()
+        maven { url "https://kotlin.bintray.com/kotlinx" }
+        maven { url  "https://kotlin.bintray.com/kotlin-js-wrappers" }
+        maven { url "https://dl.bintray.com/kotlin/kotlin-eap" }
+    }
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath "org.jetbrains.kotlinx:kotlinx-gradle-serialization-plugin:$serialization_version"
+        classpath "org.jetbrains.kotlin:kotlin-frontend-plugin:0.0.30"
+    }
+}
+
+apply plugin: 'kotlin-platform-js'
+apply plugin: 'kotlinx-serialization'
+apply plugin: 'org.jetbrains.kotlin.frontend'
+apply plugin: 'kotlin2js'
+apply plugin: 'kotlin-dce-js'
+
+repositories {
+    jcenter()
+    mavenCentral()
+    maven { url "https://kotlin.bintray.com/kotlinx" }
+    maven { url  "https://kotlin.bintray.com/kotlin-js-wrappers" }
+}
+
+dependencies {
+    compile "org.jetbrains.kotlin:kotlin-stdlib-js:$kotlin_version"
+    compile "org.jetbrains.kotlinx:kotlinx-serialization-runtime-js:$serialization_version"
+    compile 'org.jetbrains:kotlin-extensions:1.0.1-pre.27-kotlin-1.2.30'
+    compile 'org.jetbrains:kotlin-react:16.3.1-pre.27-kotlin-1.2.30'
+    compile 'org.jetbrains:kotlin-react-dom:16.3.1-pre.27-kotlin-1.2.30'
+    compile 'org.jetbrains:kotlin-css-js:1.0.0-pre.27-kotlin-1.2.30'
+    compile 'org.jetbrains:kotlin-styled:1.0.0-pre.27-kotlin-1.2.30'
+    compile "org.jetbrains.kotlinx:kotlinx-html-js"
+    expectedBy project(":")
+    testCompile "org.jetbrains.kotlin:kotlin-test-js:$kotlin_version"
+}
+
+kotlinFrontend {
+    sourceMaps = true
+
+    npm {
+        dependency("react", "16.3.2")
+        dependency("react-dom", "16.3.2")
+        dependency("styled-components", "3.2.6")
+        dependency("inline-style-prefixer", "3.0.5")
+    }
+    webpackBundle {
+        bundleName = "main"
+        contentPath = file("src/main/web")
+    }
+
+    define "PRODUCTION", project.hasProperty('prod')
+}
+
+compileKotlin2Js {
+    kotlinOptions.metaInfo = true
+    kotlinOptions.sourceMap = true
+    kotlinOptions.sourceMapEmbedSources = "always"
+    kotlinOptions.moduleKind = 'commonjs'
+    kotlinOptions.main = "call"
+}
+
+kotlin {
+    experimental {
+        coroutines 'enable'
+    }
+}

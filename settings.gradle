@@ -1,0 +1,3 @@
+rootProject.name = 'reactform'
+
+include 'reactform-server', 'reactform-client'
