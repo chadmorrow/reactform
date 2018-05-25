@@ -146,6 +146,10 @@ class App : RComponent<RProps, AppState>() {
     }
 }
 
+/*
+    As you can see from the styling below, I'm really good at CSS.
+    The important part is just seeing what it looks like to write CSS in Kotlin generally.
+ */
 
 object Styles : StyleSheet("Styles", false) {
     val root by css {
@@ -153,7 +157,7 @@ object Styles : StyleSheet("Styles", false) {
         display = Display.flex
         alignItems = Align.center
         justifyContent = JustifyContent.center
-        fontFamily = "-apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto,Oxygen-Sans,Ubuntu, Cantarell, \"Helvetica Neue\", sans-serif"
+        fontFamily = "-apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, Oxygen-Sans, Ubuntu, Cantarell, \"Helvetica Neue\", sans-serif"
         fontSize = 18.px
     }
 
