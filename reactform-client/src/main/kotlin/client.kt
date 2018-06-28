@@ -22,6 +22,7 @@ fun main(args: Array<String>) {
     }
 }
 
+data class ReqOpts(override var method: String? = "POST", override var body: dynamic) : RequestInit
 
 interface AppState : RState {
     var firstName: String
@@ -64,14 +65,8 @@ class App : RComponent<RProps, AppState>() {
         event.preventDefault()
         if (state.firstName.isNotBlank()) {
             val postData = Name(state.firstName)
-            val requestOpts = RequestInit(
-                    method = "POST",
-                    body = JSON.stringify(postData),
-                    referrerPolicy = "",
-                    integrity = ""
-            )
 
-            window.fetch("http://localhost:7000", requestOpts)
+            window.fetch("http://localhost:7000", ReqOpts(body = JSON.stringify(postData)))
                     .then {
                         console.log("Data sent successfully!")
                         console.log(postData)
